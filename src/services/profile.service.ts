@@ -14,7 +14,6 @@ export class ProfileService {
     private profileRepository: Repository<ProfileEntity>,
   ) {}
 
-
   async createProfile(profileData: CreateProfileDTO): Promise<ProfileEntity> {
     profileData.password = await bcrypt.hash(
       profileData.password,
@@ -22,6 +21,4 @@ export class ProfileService {
     );
     return this.profileRepository.save(profileData);
   }
-
-
 }

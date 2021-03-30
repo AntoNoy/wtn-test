@@ -1,7 +1,5 @@
 import { Body } from '@nestjs/common';
 import { NotFoundException } from '@nestjs/common';
-import { Param } from '@nestjs/common';
-import { ParseIntPipe } from '@nestjs/common';
 import { Get } from '@nestjs/common';
 import { UseGuards } from '@nestjs/common';
 import { Controller, Post } from '@nestjs/common';

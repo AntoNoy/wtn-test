@@ -1,6 +1,5 @@
 import { Exclude } from 'class-transformer';
 import { OneToOne } from 'typeorm';
-import { JoinColumn } from 'typeorm';
 import {
   Column,
   CreateDateColumn,

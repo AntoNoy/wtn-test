@@ -52,5 +52,4 @@ export class AuthService {
   async getSessionById(sessionId: string): Promise<SessionEntity> {
     return this.sessionRepository.findOne(sessionId);
   }
-
 }

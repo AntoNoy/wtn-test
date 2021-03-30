@@ -25,14 +25,13 @@ const entities = [ProfileEntity, MessageEntity, SessionEntity];
       entities: [...entities],
       synchronize: true,
     }),
-    TypeOrmModule.forFeature([...entities])
+    TypeOrmModule.forFeature([...entities]),
   ],
   controllers: [AuthController, ProfileController],
   providers: [AuthService, ProfileService],
 })
 export class AppModule implements NestModule {
   configure(consumer: MiddlewareConsumer) {
-    consumer
-      .apply(AuthMiddlewayre).forRoutes('*')
+    consumer.apply(AuthMiddlewayre).forRoutes('*');
   }
- }
+}
