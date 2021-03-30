@@ -1,7 +1,5 @@
-import { Exclude } from 'class-transformer';
 import { MessageHistory } from 'src/models/message-history.interface';
 import { MessageType } from 'src/models/message-type.enum';
-import { OneToOne } from 'typeorm';
 import { OneToMany } from 'typeorm';
 import {
   Column,

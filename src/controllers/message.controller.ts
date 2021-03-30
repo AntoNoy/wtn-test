@@ -116,7 +116,12 @@ export class MessageController {
     @Param('messageId', ParseIntPipe) messageId: number,
     @Profile() profile: ProfileEntity,
   ) {
-    const message = await this.messageService.getOne(messageId, ['from', 'to', 'answers', 'responseOf']);
+    const message = await this.messageService.getOne(messageId, [
+      'from',
+      'to',
+      'answers',
+      'responseOf',
+    ]);
     if (!message) {
       throw new NotFoundException();
     }
