@@ -21,4 +21,8 @@ export class ProfileService {
     );
     return this.profileRepository.save(profileData);
   }
+
+  getById(profileId: number) {
+    return this.profileRepository.findOne(profileId);
+  }
 }

@@ -1,0 +1,10 @@
+dist
+doc
+node_modules
+postman
+.editorconfig
+.env
+.env.dist
+.git
+*.md
+documentation

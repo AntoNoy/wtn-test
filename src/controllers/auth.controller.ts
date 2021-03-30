@@ -1,6 +1,8 @@
 import { Get } from '@nestjs/common';
+import { ClassSerializerInterceptor } from '@nestjs/common';
 import { UseGuards } from '@nestjs/common';
 import { Body } from '@nestjs/common';
+import { UseInterceptors } from '@nestjs/common';
 import { Controller, Post } from '@nestjs/common';
 import { Session } from 'src/decorators/session.decorator';
 import { SessionEntity } from 'src/entities/session.entity';
@@ -9,6 +11,7 @@ import { LoginDTO } from 'src/models/dto/login.dto';
 import { AuthService } from 'src/services/auth.service';
 
 @Controller('auth')
+@UseInterceptors(ClassSerializerInterceptor)
 export class AuthController {
   constructor(private authService: AuthService) {}
 

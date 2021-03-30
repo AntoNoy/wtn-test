@@ -1,5 +1,8 @@
 import { Exclude } from 'class-transformer';
+import { MessageHistory } from 'src/models/message-history.interface';
 import { MessageType } from 'src/models/message-type.enum';
+import { OneToOne } from 'typeorm';
+import { OneToMany } from 'typeorm';
 import {
   Column,
   CreateDateColumn,
@@ -16,25 +19,37 @@ export class MessageEntity {
   @PrimaryGeneratedColumn()
   id: number;
 
-  @Column()
+  @Column({ type: 'longtext' })
   message: string;
 
   @Column({ type: 'enum', enum: MessageType })
   type: MessageType;
 
-  @ManyToOne(() => ProfileEntity, (profile) => profile.messagesSend)
+  @ManyToOne(() => ProfileEntity, (profile) => profile.messagesOutbox)
   @JoinColumn()
   from: ProfileEntity;
 
-  @ManyToOne(() => ProfileEntity, (profile) => profile.messageReceived)
+  @ManyToOne(() => ProfileEntity, (profile) => profile.messagesInbox)
   @JoinColumn()
   to: ProfileEntity;
 
+  @Column('json', { default: '[]' })
+  history: MessageHistory[];
+
+  @Column({ nullable: true })
+  read: Date;
+
   @CreateDateColumn()
-  @Exclude()
   createdAt: Date;
 
   @UpdateDateColumn()
-  @Exclude()
   updatedAt: Date;
+
+  @ManyToOne(() => MessageEntity, (message) => message.answers)
+  @JoinColumn()
+  responseOf: MessageEntity;
+
+  @OneToMany(() => MessageEntity, (message) => message.responseOf)
+  @JoinColumn()
+  answers: MessageEntity[];
 }

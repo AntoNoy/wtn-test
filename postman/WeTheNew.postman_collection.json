@@ -1,0 +1,439 @@
+{
+	"info": {
+		"_postman_id": "8ddd5923-749b-499b-a681-3535fe592eba",
+		"name": "WeTheNew",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Auth",
+			"item": [
+				{
+					"name": "login",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var jsonData = pm.response.json();\r",
+									"if (pm.response.code === 201) {\r",
+									"    pm.collectionVariables.set(\"sessionId\", jsonData.id);\r",
+									"};"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"username\":\"antony\",\r\n    \"password\":\"azerty\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{endpoint}}/auth/login",
+							"host": [
+								"{{endpoint}}"
+							],
+							"path": [
+								"auth",
+								"login"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "logout",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{endpoint}}/auth/logout",
+							"host": [
+								"{{endpoint}}"
+							],
+							"path": [
+								"auth",
+								"logout"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Profile",
+			"item": [
+				{
+					"name": "createProfile",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"username\":\"Antony\",\r\n    \"password\":\"azerty\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{endpoint}}/profile/create",
+							"host": [
+								"{{endpoint}}"
+							],
+							"path": [
+								"profile",
+								"create"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "self",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"username\":\"antony\",\r\n    \"password\":\"azerty\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{endpoint}}/profile/self",
+							"host": [
+								"{{endpoint}}"
+							],
+							"path": [
+								"profile",
+								"self"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Messages",
+			"item": [
+				{
+					"name": "Messages Inbox",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{endpoint}}/messages/inbox",
+							"host": [
+								"{{endpoint}}"
+							],
+							"path": [
+								"messages",
+								"inbox"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Messages Outbox",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{endpoint}}/messages/outbox",
+							"host": [
+								"{{endpoint}}"
+							],
+							"path": [
+								"messages",
+								"outbox"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "send Message",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"to\":1,\r\n    \"message\":\"bla bla bla\",\r\n    \"type\" : \"EMAIL\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{endpoint}}/messages/send",
+							"host": [
+								"{{endpoint}}"
+							],
+							"path": [
+								"messages",
+								"send"
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "send answer Message",
+							"originalRequest": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"to\":1,\r\n    \"message\":\"bla bla bla 123\",\r\n    \"type\" : \"SMS\",\r\n    \"responseOf\":1\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{endpoint}}/messages/send",
+									"host": [
+										"{{endpoint}}"
+									],
+									"path": [
+										"messages",
+										"send"
+									]
+								}
+							},
+							"status": "Created",
+							"code": 201,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "X-Powered-By",
+									"value": "Express"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "Content-Length",
+									"value": "148"
+								},
+								{
+									"key": "ETag",
+									"value": "W/\"94-fig9ald+Hh5Y4raNlkBTJwkiDxA\""
+								},
+								{
+									"key": "Date",
+									"value": "Tue, 30 Mar 2021 16:13:17 GMT"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=5"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"id\": 1,\n    \"message\": \"bla bla bla\",\n    \"type\": \"SMS\",\n    \"history\": [],\n    \"read\": null,\n    \"createdAt\": \"2021-03-30T16:13:17.271Z\",\n    \"updatedAt\": \"2021-03-30T16:13:17.271Z\"\n}"
+						}
+					]
+				},
+				{
+					"name": "get Message",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{endpoint}}/messages/:messageId",
+							"host": [
+								"{{endpoint}}"
+							],
+							"path": [
+								"messages",
+								":messageId"
+							],
+							"variable": [
+								{
+									"key": "messageId",
+									"value": "1"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "update Message",
+					"request": {
+						"method": "PATCH",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"text\": \"blablabla781239\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{endpoint}}/messages/update/:messageId",
+							"host": [
+								"{{endpoint}}"
+							],
+							"path": [
+								"messages",
+								"update",
+								":messageId"
+							],
+							"variable": [
+								{
+									"key": "messageId",
+									"value": "1"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "delete Message",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{endpoint}}/messages/:messageId",
+							"host": [
+								"{{endpoint}}"
+							],
+							"path": [
+								"messages",
+								":messageId"
+							],
+							"variable": [
+								{
+									"key": "messageId",
+									"value": "1"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	],
+	"auth": {
+		"type": "apikey",
+		"apikey": [
+			{
+				"key": "value",
+				"value": "{{sessionId}}",
+				"type": "string"
+			},
+			{
+				"key": "key",
+				"value": "sessionId",
+				"type": "string"
+			}
+		]
+	},
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "endpoint",
+			"value": "localhost:3000"
+		},
+		{
+			"key": "sessionId",
+			"value": "30f7e496-7f83-4f5d-93a6-5d70a9a9b3ed"
+		}
+	]
+}

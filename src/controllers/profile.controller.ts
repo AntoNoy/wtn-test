@@ -2,20 +2,19 @@ import { Body } from '@nestjs/common';
 import { NotFoundException } from '@nestjs/common';
 import { Get } from '@nestjs/common';
 import { UseGuards } from '@nestjs/common';
+import { ClassSerializerInterceptor } from '@nestjs/common';
+import { UseInterceptors } from '@nestjs/common';
 import { Controller, Post } from '@nestjs/common';
-import { User } from 'src/decorators/user.decorator';
+import { Profile } from 'src/decorators/profile.decorator';
 import { ProfileEntity } from 'src/entities/profile.entity';
 import { AuthGuard } from 'src/guards/auth.guard';
 import { CreateProfileDTO } from 'src/models/dto/create-profile.dto';
-import { AuthService } from 'src/services/auth.service';
 import { ProfileService } from 'src/services/profile.service';
 
 @Controller('profile')
+@UseInterceptors(ClassSerializerInterceptor)
 export class ProfileController {
-  constructor(
-    private profileService: ProfileService,
-    private authService: AuthService,
-  ) {}
+  constructor(private profileService: ProfileService) {}
 
   @Post('create')
   createProfile(@Body() profileData: CreateProfileDTO) {
@@ -26,7 +25,7 @@ export class ProfileController {
 
   @Get('self')
   @UseGuards(AuthGuard)
-  self(@User() user: ProfileEntity) {
-    return user;
+  self(@Profile() profile: ProfileEntity) {
+    return profile;
   }
 }

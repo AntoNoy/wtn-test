@@ -1,4 +1,3 @@
-import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 
 import { ProfileEntity } from 'src/entities/profile.entity';
@@ -6,6 +5,7 @@ import { Repository } from 'typeorm';
 import * as bcrypt from 'bcrypt';
 import { NotFoundException } from '@nestjs/common';
 import { SessionEntity } from 'src/entities/session.entity';
+import { Injectable } from '@nestjs/common';
 
 @Injectable()
 export class AuthService {
@@ -18,7 +18,6 @@ export class AuthService {
   ) {}
 
   async login(username: string, password: string): Promise<SessionEntity> {
-    console.log('login');
     const profile = await this.profileRepository.findOne({
       where: { username },
       select: ['id', 'username', 'password'],

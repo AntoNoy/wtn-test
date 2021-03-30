@@ -24,10 +24,10 @@ export class ProfileEntity {
   password: string;
 
   @OneToMany(() => MessageEntity, (message) => message.from)
-  messagesSend: MessageEntity[];
+  messagesOutbox: MessageEntity[];
 
   @OneToMany(() => MessageEntity, (message) => message.to)
-  messageReceived: MessageEntity[];
+  messagesInbox: MessageEntity[];
 
   @OneToOne(() => SessionEntity, (session) => session.profile)
   session: SessionEntity;
