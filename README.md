@@ -23,7 +23,7 @@ project run on :
 - création d'utilisateur - OK
 - login d'utilisateur - OK
 - déconnexion - OK
-- accès à la corbeille - Oups j'ai oublié
+- accès à la corbeille - Oups j'ai oublié (J'aurais ajouté un boolean 'deleted' à MessageEntity, et ensuite j'aurais filtré avec TypeOrm les éléments 'deleted' suivant les besoins)
 - répondre à un message spécifique  - OK
 - modification et historisation d'un message  - OK
 
