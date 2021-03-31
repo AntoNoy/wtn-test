@@ -44,7 +44,7 @@ export class AuthService {
     return this.sessionRepository.findOne(session.id);
   }
 
-  logOut(sessionId: string) {
+  logOut(sessionId: string): Promise<any> {
     return this.sessionRepository.delete(sessionId);
   }
 

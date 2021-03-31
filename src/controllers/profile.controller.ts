@@ -17,15 +17,15 @@ export class ProfileController {
   constructor(private profileService: ProfileService) {}
 
   @Post('create')
-  createProfile(@Body() profileData: CreateProfileDTO) {
-    return this.profileService
-      .createProfile(profileData)
-      .catch((err) => new NotFoundException(err));
+  createProfile(@Body() profileData: CreateProfileDTO): Promise<ProfileEntity> {
+    return this.profileService.createProfile(profileData).catch((err) => {
+      throw new NotFoundException(err);
+    });
   }
 
   @Get('self')
   @UseGuards(AuthGuard)
-  self(@Profile() profile: ProfileEntity) {
+  self(@Profile() profile: ProfileEntity): ProfileEntity {
     return profile;
   }
 }

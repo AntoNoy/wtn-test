@@ -8,6 +8,7 @@ import { Param } from '@nestjs/common';
 import { NotFoundException } from '@nestjs/common';
 import { Patch } from '@nestjs/common';
 import { UnauthorizedException } from '@nestjs/common';
+import { SerializeOptions } from '@nestjs/common';
 import { ParseIntPipe } from '@nestjs/common';
 import { Delete } from '@nestjs/common';
 import { Controller } from '@nestjs/common';
@@ -18,6 +19,7 @@ import { AuthGuard } from 'src/guards/auth.guard';
 import { SendMessageDTO } from 'src/models/dto/send-message.dto';
 import { MessageService } from 'src/services/message.service';
 import { ProfileService } from 'src/services/profile.service';
+import { asReceiver, asSender } from 'src/utils/user-message.util';
 
 @Controller('messages')
 @UseInterceptors(ClassSerializerInterceptor)
@@ -35,7 +37,7 @@ export class MessageController {
   async sendMessage(
     @Profile() profile: ProfileEntity,
     @Body() message: SendMessageDTO,
-  ) {
+  ): Promise<MessageEntity> {
     const destinationProfile = await this.profileService.getById(message.to);
     if (!destinationProfile) {
       throw new NotFoundException('Destinataire non existant');
@@ -53,7 +55,10 @@ export class MessageController {
    * Get all message from profile Inbox
    */
   @Get('inbox')
-  getInBox(@Profile() profile: ProfileEntity) {
+  @SerializeOptions({
+    excludePrefixes: ['history'],
+  })
+  getInBox(@Profile() profile: ProfileEntity): Promise<MessageEntity[]> {
     return this.messageService.getInBox(profile);
   }
 
@@ -61,6 +66,9 @@ export class MessageController {
    * Get all message from profile Outbox
    */
   @Get('outbox')
+  @SerializeOptions({
+    excludePrefixes: ['history'],
+  })
   getOutBox(@Profile() profile: ProfileEntity): Promise<MessageEntity[]> {
     return this.messageService.getOutBox(profile);
   }
@@ -73,12 +81,12 @@ export class MessageController {
   async deleteMessage(
     @Profile() profile: ProfileEntity,
     @Param('messageId', ParseIntPipe) messageId: number,
-  ) {
+  ): Promise<any> {
     const message = await this.messageService.getOne(messageId, ['from', 'to']);
     if (!message) {
       throw new NotFoundException();
     }
-    if (!this.asReceiver(profile, message)) {
+    if (!asReceiver(profile, message)) {
       throw new UnauthorizedException();
     }
     return this.messageService.deleteOne(message.id);
@@ -93,15 +101,12 @@ export class MessageController {
     @Body() newMessage,
     @Profile() profile: ProfileEntity,
     @Param('messageId', ParseIntPipe) messageId: number,
-  ) {
+  ): Promise<MessageEntity> {
     const message = await this.messageService.getOne(messageId, ['from', 'to']);
     if (!message) {
       throw new NotFoundException();
     }
-    if (
-      !this.asReceiver(profile, message) &&
-      !this.asSender(profile, message)
-    ) {
+    if (!asReceiver(profile, message) && !asSender(profile, message)) {
       throw new UnauthorizedException();
     }
     return this.messageService.updateText(message, newMessage.text);
@@ -115,7 +120,7 @@ export class MessageController {
   async getOne(
     @Param('messageId', ParseIntPipe) messageId: number,
     @Profile() profile: ProfileEntity,
-  ) {
+  ): Promise<MessageEntity> {
     const message = await this.messageService.getOne(messageId, [
       'from',
       'to',
@@ -125,29 +130,13 @@ export class MessageController {
     if (!message) {
       throw new NotFoundException();
     }
-    if (
-      !this.asSender(profile, message) &&
-      !this.asReceiver(profile, message)
-    ) {
+    if (!asSender(profile, message) && !asReceiver(profile, message)) {
       throw new UnauthorizedException();
     }
-    if (!message.read && this.asReceiver(profile, message)) {
+    if (!message.read && asReceiver(profile, message)) {
       message.read = new Date();
       await this.messageService.save(message);
     }
     return message;
-  }
-  /**
-   * Fonction outil pour déterminer si l'user est l'émetteur
-   */
-  private asSender(profile: ProfileEntity, message: MessageEntity) {
-    return message.from.id === profile.id;
-  }
-
-  /**
-   * Fonction outil pour déterminer si l'user est le receveur
-   */
-  private asReceiver(profile: ProfileEntity, message: MessageEntity) {
-    return message.to.id === profile.id;
   }
 }

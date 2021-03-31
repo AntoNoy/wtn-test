@@ -22,7 +22,7 @@ export class ProfileService {
     return this.profileRepository.save(profileData);
   }
 
-  getById(profileId: number) {
+  getById(profileId: number): Promise<ProfileEntity> {
     return this.profileRepository.findOne(profileId);
   }
 }
